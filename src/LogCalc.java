@@ -11,34 +11,34 @@ import java.lang.Math;
 
 public class LogCalc extends Application {
 	
-	Label valuelabel;
-	Button butt0,butt1,butt2,butt3,butt4,butt5,butt6,butt7,butt8,butt9,buttadd,buttsub,buttmult,buttdiv,buttclear,buttlog2,buttenter;
-	double screen_num = 0.0;
-	double num1=0.0;
-	double num2=0.0;
-	char op = '\0';
+	private Label valuelabel;
+	private Button butt0,butt1,butt2,butt3,butt4,butt5,butt6,butt7,butt8,butt9,buttadd,buttsub,buttmult,buttdiv,buttclear,buttlog2,buttenter;
+	private double screen_num = 0.0;
+	private double leftOperand=0.0;
+	private double rightOperand=0.0;
+	private char operator = '\0';
 	
 	public static void main(String[] args) {
 		launch(args);
 	}
 	
-	public void operating() {
-		switch(op) {
+	private void operating() {
+		switch(operator) {
 		case '+':
-			num1 = num1 + num2;
+			leftOperand = leftOperand + rightOperand;
 			break;
 		case '-':
-			num1 = num1 - num2;
+			leftOperand = leftOperand - rightOperand;
 			break;
 		case '*':
-			num1 = num1 * num2;
+			leftOperand = leftOperand * rightOperand;
 			break;
 		case '/':
-			num1 = num1 / num2;
+			leftOperand = leftOperand / rightOperand;
 			break;
 		}
-		op='\0';
-		num2 = 0.0;
+		operator='\0';
+		rightOperand = 0.0;
 		screen_num = 0.0;
 	}
 	
@@ -60,11 +60,10 @@ public class LogCalc extends Application {
 		butt0 = new Button("0");
 		butt0.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				if ((op == '/')) {
+				if ((operator == '/')) {
 					valuelabel.setText("ERROR: bad input");
 					return;
 				}
-				//operating(0.0);
 				screen_num = screen_num * 10.0;
 				valuelabel.setText("Value: "+screen_num);
 			}
@@ -73,7 +72,6 @@ public class LogCalc extends Application {
 		butt1 = new Button("1");
 		butt1.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				//operating(1.0);
 				screen_num = screen_num*10.0 + 1.0;
 				valuelabel.setText("Value: "+screen_num);
 			}
@@ -81,7 +79,6 @@ public class LogCalc extends Application {
 		butt2 = new Button("2");
 		butt2.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				//operating(2.0);
 				screen_num = screen_num*10.0 + 2.0;
 				valuelabel.setText("Value: "+screen_num);
 			}
@@ -139,49 +136,49 @@ public class LogCalc extends Application {
 		buttadd = new Button("+");
 		buttadd.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {				
-				op='+';
-				num1 = screen_num;
+				operator='+';
+				leftOperand = screen_num;
 				screen_num = 0.0;
 			}
 		});
 		buttsub = new Button("-");
 		buttsub.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {				
-				op='-';
-				num1 = screen_num;
+				operator='-';
+				leftOperand = screen_num;
 				screen_num = 0.0;
 			}
 		});
 		buttmult = new Button("*");
 		buttmult.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {				
-				op='*';
-				num1 = screen_num;
+				operator='*';
+				leftOperand = screen_num;
 				screen_num = 0.0;
 			}
 		});
 		buttdiv = new Button("/");
 		buttdiv.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {				
-				op='/';
-				num1 = screen_num;
+				operator='/';
+				leftOperand = screen_num;
 				screen_num = 0.0;
 			}
 		});
 		buttlog2 = new Button("log2");
 		buttlog2.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				num1 = screen_num;
-				if ((op != '\0') || (num1 <= 0)) {
-					num1 = 0.0;
-					num2 = 0.0;
+				leftOperand = screen_num;
+				if ((operator != '\0') || (leftOperand <= 0)) {
+					leftOperand = 0.0;
+					rightOperand = 0.0;
 					screen_num = 0.0;
-					op = '\0';
+					operator = '\0';
 					valuelabel.setText("ERROR: bad input");
 				}
 				else {
-					num1 = Math.log(screen_num) / Math.log(2.0);
-					screen_num = num1;
+					leftOperand = Math.log(screen_num) / Math.log(2.0);
+					screen_num = leftOperand;
 					valuelabel.setText("Value: "+screen_num);
 				}
 			}
@@ -189,19 +186,19 @@ public class LogCalc extends Application {
 		buttclear = new Button("Clear");
 		buttclear.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				num1=0.0;
-				num2=0.0;
+				leftOperand=0.0;
+				rightOperand=0.0;
 				screen_num = 0.0;
-				op='\0';
+				operator='\0';
 				valuelabel.setText("Value: 0.0");
 			}
 		});
 		buttenter = new Button("Enter");
 		buttenter.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
-				num2 = screen_num;
+				rightOperand = screen_num;
 				operating();
-				screen_num = num1;
+				screen_num = leftOperand;
 				valuelabel.setText("Value: "+screen_num);
 			}
 		});
